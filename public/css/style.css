@@ -1,0 +1,46 @@
+div.container {
+    width: 100%;
+    border: 1px solid gray;
+}
+
+header {
+    padding: 10px;
+    color:  white;
+    background-color: navy;
+    clear: left;
+    text-align: center;
+}
+
+div.banner {
+    padding: 20px;
+    color:  navy;
+    background-color: white;
+    border-bottom: 1px solid navy;
+    clear: left;
+    text-align: center;
+}
+
+section {
+    height: 350px;
+    text-align: center;
+    padding: 10px;
+    margin: 30px;
+    border: 1px solid navy;
+}
+
+div.card {
+    height: 180px;
+    width: 30%;
+    text-align: center;
+    padding: 10px;
+    margin: 30px;
+    border: 1px solid navy;
+}
+
+footer {
+    padding: 10px;
+    color: white;
+    background-color: navy;
+    clear: left;
+    text-align: center;
+}
