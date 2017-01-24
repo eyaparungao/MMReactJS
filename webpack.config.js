@@ -34,7 +34,7 @@ const config = {
       $: "jquery",
       jQuery: "jquery"
     }),
-    new ExtractTextPlugin("bundle.css")
+    new ExtractTextPlugin("/bundle.css")
 ],
 }
 if (process.env.NODE_ENV === 'production') {
