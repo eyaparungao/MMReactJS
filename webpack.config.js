@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const config = {
   devtool: "inline-source-map",
@@ -16,6 +17,10 @@ const config = {
       query: {
         presets: ["es2015","react","stage-0"]
       }
+    },
+    {
+      test: /\.css$/,
+      loader: ExtractTextPlugin.extract("css-loader")
     }]
   },
   devServer: {
@@ -28,7 +33,8 @@ const config = {
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery"
-    })
+    }),
+    new ExtractTextPlugin("bundle.css")
 ],
 }
 if (process.env.NODE_ENV === 'production') {
