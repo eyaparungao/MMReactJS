@@ -1,6 +1,6 @@
 
 var React = require('react');
-var Card = require('./card.js');
+var Card = require('./Card.jsx');
 
 var CardCollection = React.createClass({
     render: function() {
