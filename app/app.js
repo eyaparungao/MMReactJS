@@ -1,20 +1,21 @@
 'use strict';
 
-var style = require('../public/css/style.css');
-//var style = require('../public/css/Bootstrap.css');
-
 var React = require('react');
 var ReactDOM = require ('react-dom');
 var Router = require('react-router');
-var Route = Router.Route;
-var Link = Router.Link;
-var RouteHandler = Router.RouteHandler;
-var DefaultRoute = Router.DefaultRoute;
+var Route = require('react-router').Route;
+// var Link = Router.Link;
+// var RouteHandler = Router.RouteHandler;
+// var DefaultRoute = Router.DefaultRoute;
 
 var Bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.js');
 var ReactBootstrap = require('../node_modules/react-bootstrap/dist/react-bootstrap.js');
 
 var App = require('./components/App.jsx');
+var About = require('./components/About.jsx');
+
+require('../public/css/style.css');
+//require('../public/css/Bootstrap.css');
 
 var columns = [
     { columnId: 'taskDetails', label: 'Task Details' },
@@ -43,16 +44,3 @@ var datasource = [{
 }];
 
 ReactDOM.render(<App columns={columns} data={datasource} />, document.getElementById('app'));
-
-
-// var routes = (
-//   <Route name="app" handler={App} path="/">
-//     <Route name="about" path="/about" handler={AboutPage}/>
-//     <Route name="taskList" path="/tasks" handler={ClockPage}/>
-//     <DefaultRoute handler={ClockPage} />
-//   </Route>
-// );
-
-// Router.run(routes, function(Handler, state) {
-//   React.render(<Handler />, document.body);
-// })

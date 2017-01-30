@@ -24,7 +24,9 @@ div.banner {
 section {
     height: 350px;
     text-align: center;
-    margin: 30px;
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 div.card {
@@ -49,4 +51,31 @@ footer {
     background-color: navy;
     clear: left;
     text-align: center;
+}
+
+th.task-header {
+    text-align: center;
+    vertical-align: center;
+    font-weight: bold;
+    background-color: aliceblue;
+}
+
+div.task-name {
+    font-size: medium;
+}
+
+div.task-description {
+    font-size: small;
+}
+
+.table > tbody > tr > td.task-detail {
+    text-align: left;
+}
+
+.table > tbody > tr > td.task-priority {
+    vertical-align: middle;
+}
+
+.table > tbody > tr > td.task-status {
+    vertical-align: middle;
 }
