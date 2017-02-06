@@ -1,20 +1,28 @@
 'use strict';
 
 var React = require('react');
-var ReactBootstrap = require('../../node_modules/react-bootstrap/dist/react-bootstrap.js');
+var ReactBootstrap = require('../../../node_modules/react-bootstrap/dist/react-bootstrap.js');
 var Table = ReactBootstrap.Table;
 var Panel = ReactBootstrap.Panel;
+var TaskApi = require("../../api/taskApi");
 
 var TaskList = React.createClass({    
+    getInitialState: function() {
+        return {
+            tasks: TaskApi.getAllTasks()
+        }
+    },
     renderColumnHeaders: function() {
-        var columns = this.props.columns.map(function(column) {
-            return <th className="task-header" key={column.columnId}> {column.label} </th>;
-        });
-        
-        return <tr>{ columns }</tr>;
+        return (
+            <tr>
+                <th className="task-header">Task Details</th>
+                <th className="task-header">Priority</th>
+                <th className="task-header">Status</th>
+            </tr>
+        );
     },
     renderTasks: function() {
-        return this.props.data.map(function(task) {
+        return this.state.tasks.map(function(task) {
             var priorityText = "None";
             var statusText = "None";
             
@@ -51,7 +59,7 @@ var TaskList = React.createClass({
     render: function() {
         return (    
             <section> 
-                <Panel header={this.props.title} bsStyle="primary">
+                <Panel header="Task Master List" bsStyle="primary">
                     <Table striped bordered condensed hover>
                         <thead>{ this.renderColumnHeaders() }</thead>
                         <tbody>{ this.renderTasks() }</tbody>

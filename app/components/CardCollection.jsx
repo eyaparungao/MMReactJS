@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react');
-var Card = require('./Card.jsx');
+var Card = require('./Card');
 
 var CardCollection = React.createClass({
     render: function() {

@@ -3,11 +3,14 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const config = {
   devtool: "inline-source-map",
-  entry:  __dirname + "/app/app.js",
+  entry:  __dirname + "/app/app.jsx",
   output: {
     path: "./public/js/",
     publicPath: "/js/",
     filename: "bundle.js"
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx']
   },
   module: {
     loaders: [{
@@ -37,14 +40,5 @@ const config = {
     new ExtractTextPlugin("/bundle.css")
 ],
 }
-if (process.env.NODE_ENV === 'production') {
-  config.devtool = false;
-  config.plugins = [
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({comments: false}),
-    new webpack.DefinePlugin({
-      'process.env': {NODE_ENV: JSON.stringify('production')}
-    })
-  ];
-};
+
 module.exports = config;
