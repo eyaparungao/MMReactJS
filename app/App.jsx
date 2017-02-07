@@ -3,16 +3,14 @@
 var React = require('react');
 var ReactDOM = require ('react-dom');
 var Router = require('react-router').Router;
-var TaskApi = require("./api/taskApi");
-
-var Bootstrap = require('../node_modules/bootstrap/dist/js/bootstrap.js');
-var ReactBootstrap = require('../node_modules/react-bootstrap/dist/react-bootstrap.js');
 var hashHistory = require("react-router").hashHistory;
 var Routes = require("./Routes");
 
+var TaskApi = require("./api/taskApi");
 var About = require('./components/About');
 
-require('../public/css/style.css');
+var Style = require('../public/css/style.css');
+var FontAwesome = require('font-awesome/css/font-awesome.css');
 //require('../public/css/Bootstrap.css');
 
 TaskApi.initializeTasks();

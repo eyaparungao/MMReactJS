@@ -5,6 +5,7 @@ var ReactBootstrap = require('../../../node_modules/react-bootstrap/dist/react-b
 var Table = ReactBootstrap.Table;
 var Panel = ReactBootstrap.Panel;
 var TaskApi = require("../../api/taskApi");
+var TaskListItem = require('./TaskListItem');
 
 var TaskList = React.createClass({    
     getInitialState: function() {
@@ -12,49 +13,34 @@ var TaskList = React.createClass({
             tasks: TaskApi.getAllTasks()
         }
     },
+    handleDeleteTask: function(taskId) {
+        if (taskId) {
+            TaskApi.deleteTask(taskId);
+            this.handleUpdateAllTasks();
+        }
+    },
+    handleUpdateAllTasks: function() {
+        this.setState({ tasks: TaskApi.getAllTasks() });
+    },
     renderColumnHeaders: function() {
         return (
             <tr>
-                <th className="task-header">Task Details</th>
-                <th className="task-header">Priority</th>
-                <th className="task-header">Status</th>
+                <th className="task-header col-lg-4">Task Details</th>
+                <th className="task-header col-lg-2">Priority</th>
+                <th className="task-header col-lg-2">Status</th>
+                <th className="task-header col-lg-1"></th>
             </tr>
         );
     },
     renderTasks: function() {
         return this.state.tasks.map(function(task) {
-            var priorityText = "None";
-            var statusText = "None";
-            
-            switch (task.priority) {
-                case 1: priorityText = "High"; break;
-                case 2: priorityText = "Medium"; break;
-                case 3: priorityText = "Low"; break;
-            }   
-            
-            switch(task.statusId) {
-                case "ToDo":
-                    statusText = "To Do"; 
-                    break;
-                case "InProgress": 
-                    statusText = "In Progress"; 
-                    break;
-                case "Done": 
-                    statusText = "Done"; 
-                    break;
-            }   
-
             return (
-                <tr key = {task.taskId}>
-                    <td className="task-detail">
-                        <div className="task-name">{task.name}</div>
-                        <div className="task-description">&nbsp;&nbsp;&nbsp;{task.description}</div>
-                    </td>
-                    <td className="task-priority">{priorityText}</td>
-                    <td className="task-status">{statusText}</td>
-                </tr>
+                <TaskListItem
+                    key={task.taskId}
+                    task={task}
+                    onDeleteTask={this.handleDeleteTask.bind(this, task.taskId)}  />
             );
-        });
+        }, this);
     },
     render: function() {
         return (    
@@ -64,6 +50,9 @@ var TaskList = React.createClass({
                         <thead>{ this.renderColumnHeaders() }</thead>
                         <tbody>{ this.renderTasks() }</tbody>
                     </Table>
+                    <div>
+                        <button className="btn btn-primary">Add New Task</button>
+                    </div>
                 </Panel>
             </section>
         );
