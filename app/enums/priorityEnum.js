@@ -15,6 +15,13 @@ var priorityEnum = {
                 return "High";
         }
         return result;
+    },
+    getAllPriorities: function() {
+        var priorities = [];
+        priorities.push({key: this.low, value: this.toString(this.low)});
+        priorities.push({key: this.medium, value: this.toString(this.medium)});
+        priorities.push({key: this.high, value: this.toString(this.high)});
+        return priorities;
     }
 }
 

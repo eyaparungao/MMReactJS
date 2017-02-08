@@ -15,6 +15,13 @@ var statusEnum = {
                 return "Done";
         }
         return result;
+    },
+    getAllStatuses: function() {
+        var statuses = [];
+        statuses.push({key: this.todo, value: this.toString(this.todo)});
+        statuses.push({key: this.inprogress, value: this.toString(this.inprogress)});
+        statuses.push({key: this.done, value: this.toString(this.done)});
+        return statuses;
     }
 }
 
