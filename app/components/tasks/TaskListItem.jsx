@@ -3,6 +3,7 @@
 var React = require('react');
 var priorityEnum = require("../../enums/priorityEnum");
 var statusEnum = require("../../enums/statusEnum");
+var TaskApi = require("../../api/taskApi");
 
 var InputText = require("../controls/InputText");
 var DropDownList = require("../controls/DropDownList");
@@ -10,19 +11,27 @@ var DropDownList = require("../controls/DropDownList");
 var TaskListItem = React.createClass({ 
     getInitialState: function() {
         return {
-            isReadOnly: false
+            isReadOnly: true,
+            task: this.props.task
         };
     },
     handleDeleteTask: function() {
         this.props.onDeleteTask();
     },
     handleEditTask: function() {
+        this.setState({ isReadOnly: false });
+    },
+    handleSaveTask: function() {
+        TaskApi.saveTask(this.state.task);
+        this.setState({ isReadOnly: true });
+    },
+    handleCancelTask: function() {
         this.setState({ isReadOnly: true });
     },
     renderPriorityColumn: function() {
         if (this.state.isReadOnly) {
             return (
-                <td className="task-priority">{priorityEnum.toString(this.props.task.priority)}</td>
+                <td className="task-priority">{priorityEnum.toString(this.state.task.priority)}</td>
             );
         }
         else {
@@ -30,9 +39,9 @@ var TaskListItem = React.createClass({
                 <td className="task-priority">
                     <DropDownList 
                         name="priority"
-                        defaultValue={this.props.task.priority}
+                        defaultValue={this.state.task.priority}
                         items={priorityEnum.getAllPriorities()} 
-                        onChange={this.setState}/>
+                        onChange={this.setTaskState}/>
                 </td>
             );
         }
@@ -40,7 +49,7 @@ var TaskListItem = React.createClass({
     renderStatusColumn: function() {
         if (this.state.isReadOnly) {
             return (
-                <td className="task-status">{statusEnum.toString(this.props.task.statusId)}</td>
+                <td className="task-status">{statusEnum.toString(this.state.task.status)}</td>
             );
         }
         else {
@@ -48,9 +57,9 @@ var TaskListItem = React.createClass({
                 <td className="task-priority">
                     <DropDownList 
                         name="status"
-                        defaultValue={this.props.task.statusId}
+                        defaultValue={this.state.task.status}
                         items={statusEnum.getAllStatuses()} 
-                        onChange={this.setState}/>
+                        onChange={this.setTaskState}/>
                 </td>
             );
         }
@@ -59,8 +68,8 @@ var TaskListItem = React.createClass({
         if (this.state.isReadOnly) {
             return (
                 <td className="task-detail">
-                    <div className="task-name">{this.props.task.name}</div>
-                    <div className="task-description">&nbsp;&nbsp;&nbsp;{this.props.task.description}</div>
+                    <div className="task-name">{this.state.task.name}</div>
+                    <div className="task-description">&nbsp;&nbsp;&nbsp;{this.state.task.description}</div>
                 </td>
             );
         } else {
@@ -68,15 +77,17 @@ var TaskListItem = React.createClass({
                 <td className="task-detail">
                     <div>
                         <InputText 
+                            name="name"
                             className="task-name"
-                            value={this.props.task.name}
-                            onChange={this.setState}/>
+                            value={this.state.task.name}
+                            onChange={this.setTaskState}/>
                     </div>
                     <div>
                         <InputText 
+                            name="description"
                             className="task-description"
-                            value={this.props.task.description}
-                            onChange={this.setState}/>
+                            value={this.state.task.description}
+                            onChange={this.setTaskState}/>
                     </div>
                 </td>
             );
@@ -103,11 +114,13 @@ var TaskListItem = React.createClass({
             return (
                 <td>
                     <button className="btn btn-sm"
-                        title="Save Task">
+                        title="Save Task"
+                        onClick={this.handleSaveTask}>
                         <i className="fa fa-save"></i>
                     </button>&nbsp;
                     <button className="btn btn-sm"
-                        title="Cancel">
+                        title="Cancel"
+                        onClick={this.handleCancelTask}>
                         <i className="fa fa-remove"></i>
                     </button>
                 </td>
@@ -115,7 +128,12 @@ var TaskListItem = React.createClass({
         }
     },
     setTaskState: function(event) {
-        console.log(event);
+        const {name, value } = event.target;
+        if (event.target.nodeName === "SELECT") {
+            this.state.task[name] = Number(value);
+        } else {
+            this.state.task[name] = value;
+        }
         this.setState({ task: this.state.task })
     },
     render: function() {
