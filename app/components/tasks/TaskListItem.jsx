@@ -6,6 +6,7 @@ var statusEnum = require("../../enums/statusEnum");
 var TaskApi = require("../../api/taskApi");
 
 var InputText = require("../controls/InputText");
+var TextArea = require("../controls/TextArea");
 var DropDownList = require("../controls/DropDownList");
 
 var TaskListItem = React.createClass({ 
@@ -36,7 +37,7 @@ var TaskListItem = React.createClass({
         }
         else {
             return (
-                <td className="task-priority">
+                <td className="task-priority-edit">
                     <DropDownList 
                         name="priority"
                         defaultValue={this.state.task.priority}
@@ -54,7 +55,7 @@ var TaskListItem = React.createClass({
         }
         else {
             return (
-                <td className="task-priority">
+                <td className="task-status-edit">
                     <DropDownList 
                         name="status"
                         defaultValue={this.state.task.status}
@@ -83,7 +84,7 @@ var TaskListItem = React.createClass({
                             onChange={this.setTaskState}/>
                     </div>
                     <div>
-                        <InputText 
+                        <TextArea 
                             name="description"
                             className="task-description"
                             value={this.state.task.description}
@@ -128,11 +129,10 @@ var TaskListItem = React.createClass({
         }
     },
     setTaskState: function(event) {
-        const {name, value } = event.target;
         if (event.target.nodeName === "SELECT") {
-            this.state.task[name] = Number(value);
+            this.state.task[event.target.name] = Number(event.target.value);
         } else {
-            this.state.task[name] = value;
+            this.state.task[event.target.name] = event.target.value;
         }
         this.setState({ task: this.state.task })
     },

@@ -17,6 +17,7 @@ var DropDownList = React.createClass({
     render: function() {
         return (
             <select
+                className="form-control"
                 name={this.props.name}
                 defaultValue={this.props.defaultValue}
                 onChange={this.props.onChange}>

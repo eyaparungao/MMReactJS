@@ -7,7 +7,11 @@ var BootstrapTable = ReactBsTable.BootstrapTable;
 var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
 var Table = ReactBootstrap.Table;
 var Panel = ReactBootstrap.Panel;
+var Modal = ReactBootstrap.Modal;
+// var Router = require('react-router');
+// var Link = Router.Link;
 var TaskApi = require("../../api/taskApi");
+var TaskForm = require('./TaskForm');
 var TaskListItem = require('./TaskListItem');
 
 var products = [{
@@ -23,7 +27,8 @@ var products = [{
 var TaskList = React.createClass({    
     getInitialState: function() {
         return {
-            tasks: TaskApi.getAllTasks()
+            tasks: TaskApi.getAllTasks(),
+            showModal: false
         }
     },
     handleDeleteTask: function(taskId) {
@@ -34,6 +39,14 @@ var TaskList = React.createClass({
     },
     handleUpdateAllTasks: function() {
         this.setState({ tasks: TaskApi.getAllTasks() });
+    },
+    handleOpenModal: function() {
+        this.setState({ showModal: true });
+    },
+
+    handleCloseModal: function() {
+        this.setState({ showModal: false });
+        this.handleUpdateAllTasks();
     },
     renderColumnHeaders: function() {
         return (
@@ -75,8 +88,12 @@ var TaskList = React.createClass({
                         <tbody>{ this.renderTasks() }</tbody>
                     </Table>
                     <div>
-                        <button className="btn btn-primary">Add New Task</button>
+                        <button onClick={this.handleOpenModal}>Add New Task</button>
                     </div>
+                    <Modal show={this.state.showModal} >
+                        <TaskForm
+                            onCancelTask={this.handleCloseModal}/>
+                    </Modal>
                 </Panel>
             </section>
         );

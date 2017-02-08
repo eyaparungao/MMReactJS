@@ -74,6 +74,14 @@ div.task-description {
     vertical-align: middle;
 }
 
+.table > tbody > tr > td.task-priority-edit {
+    vertical-align: top;
+}
+
 .table > tbody > tr > td.task-status {
     vertical-align: middle;
+}
+
+.table > tbody > tr > td.task-status-edit {
+    vertical-align: top;
 }

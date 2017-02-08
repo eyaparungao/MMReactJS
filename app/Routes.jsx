@@ -8,6 +8,7 @@ var Redirect =  require('react-router').Redirect;
 var Layout = require('./components/Layout');
 var About = require('./components/About');
 var TaskContainer = require('./components/tasks/TaskContainer');
+var TaskForm = require('./components/tasks/TaskForm');
 var PageNotFound = require('./components/common/PageNotFound');
 
 var routes = (
