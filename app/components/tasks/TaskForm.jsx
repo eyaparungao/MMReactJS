@@ -42,7 +42,10 @@ var TaskForm = React.createClass({
         return (    
             <section className="task-form"> 
                 <Panel header="Add New Task" bsStyle="info">
-                    <div>
+                    <div 
+                        className="form-group"
+                        style={{textAlign: "left"}}>
+                        <label htmlFor="name">Task Name: </label>&nbsp;
                         <InputText 
                             name="name"
                             placeholder="Task Name"
@@ -51,7 +54,10 @@ var TaskForm = React.createClass({
                             value={this.state.task.name}
                             onChange={this.setTaskState}/>
                     </div>
-                    <div>
+                    <div 
+                        className="form-group"
+                        style={{textAlign: "left"}}>
+                        <label htmlFor="description">Description: </label>&nbsp;
                         <TextArea 
                             name="description"
                             placeholder="Description"
@@ -59,19 +65,25 @@ var TaskForm = React.createClass({
                             value={this.state.task.description}
                             onChange={this.setTaskState}/>
                     </div>
-                    <div>
+                    <div 
+                        className="form-group"                        
+                        style={{textAlign: "left"}}>
+                        <label htmlFor="status">Status: </label>&nbsp;
                         <DropDownList 
                             name="status"
                             defaultValue={this.state.task.status}
                             items={statusEnum.getAllStatuses()} 
                             onChange={this.setTaskState}/>
                     </div>
-                    <div>
-                    <DropDownList 
-                        name="priority"
-                        defaultValue={this.state.task.priority}
-                        items={priorityEnum.getAllPriorities()} 
-                        onChange={this.setTaskState}/>
+                    <div 
+                        className="form-group"
+                        style={{textAlign: "left"}}>
+                        <label htmlFor="priority">Priority: </label>&nbsp;
+                        <DropDownList 
+                            name="priority"
+                            defaultValue={this.state.task.priority}
+                            items={priorityEnum.getAllPriorities()} 
+                            onChange={this.setTaskState}/>
                     </div>
                     <br/>
                     <div className="btn-group">

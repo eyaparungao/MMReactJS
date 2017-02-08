@@ -98,12 +98,12 @@ var TaskListItem = React.createClass({
         if (this.state.isReadOnly) {
             return (
                 <td>
-                    <button className="btn btn-sm"
+                    <button className="btn btn-sm btn-primary"
                         title="Edit Task"
                         onClick={this.handleEditTask}>
                         <i className="fa fa-pencil"></i>
                     </button>&nbsp;
-                    <button className="btn btn-sm"
+                    <button className="btn btn-sm btn-danger"
                         title="Delete Task"
                         onClick={this.handleDeleteTask}>
                         <i className="fa fa-trash"></i>
@@ -114,12 +114,12 @@ var TaskListItem = React.createClass({
         else {
             return (
                 <td>
-                    <button className="btn btn-sm"
+                    <button className="btn btn-sm btn-success"
                         title="Save Task"
                         onClick={this.handleSaveTask}>
                         <i className="fa fa-save"></i>
                     </button>&nbsp;
-                    <button className="btn btn-sm"
+                    <button className="btn btn-sm btn-danger"
                         title="Cancel"
                         onClick={this.handleCancelTask}>
                         <i className="fa fa-remove"></i>
