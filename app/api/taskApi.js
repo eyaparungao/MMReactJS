@@ -26,7 +26,7 @@ var initialTaskData = [{
 var getNewId = function () {
     if (tasks && tasks.length >= 1) {
         var max = _.maxBy(tasks, function (task) { return task.taskId; });
-        return max.id + 1;
+        return max.taskId + 1;
     }
     return 1;
 };
@@ -39,7 +39,7 @@ var TaskApi = {
         return JSON.parse(JSON.stringify(tasks));
     },
     saveTask: function(task) {
-        if (task.taskId) {
+        if (task.taskId != 0) {
             var existingTask = _.indexOf(tasks, _.find(tasks, { taskId: task.taskId }));
             tasks.splice(existingTask, 1, task);
         } else {
