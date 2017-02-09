@@ -11,40 +11,14 @@ var TaskListItem = require('./TaskListItem');
 var TaskListHeaders = require('./TaskListHeaders');
 var TaskListHeaderItem = require('./TaskListHeaderItem');
 
-var columns = [{
-        id: 1,
-        title: "Task Details",
-        sortField: "name",
-        className: "task-header col-lg-4",
-        sortable: true
-    }, {
-        id: 2,
-        title: "Priority",
-        sortField: "priority",
-        className: "task-header col-lg-2",
-        sortable: true
-    }, {
-        id: 3,
-        title: "Status",
-        sortField: "status",
-        className: "task-header col-lg-2",
-        sortable: true
-    }, {
-        id: 4,
-        title: "",
-        className: "task-header col-lg-1",
-        sortable: false
-    }
-];
-
 var TaskList = React.createClass({    
     getInitialState: function() {
         return {
-            tasks: TaskApi.getAllTasks(),
+            tasks: this.props.data,
             showModal: false,
             sortKey: "name",
             sortDirection: "ASC",
-            columns: columns,
+            columns: this.props.columns,
             activeSortKey: 1
         }
     },
@@ -64,11 +38,11 @@ var TaskList = React.createClass({
         this.setState({ showModal: false });
         this.handleUpdateAllTasks();
     },
-    setActiveSortKey: function(id) {
+    setActiveSortKey: function(id, sortOrder) {
         this.setState({ activeSortKey: id });
-        this.sortTasks(id);
+        this.sortTasks(id, sortOrder);
     },
-    sortTasks: function(id) {
+    sortTasks: function(id, sortOrder) {
         var sortField = "";
         for (var i = 0; i < this.state.columns.length; i++) {
             if (this.state.columns[i].id == id && this.state.columns[i].sortable) {
@@ -77,9 +51,8 @@ var TaskList = React.createClass({
             }
         }
         if (sortField != "") {
-            var sortDirection = this.state.sortDirection;
             var sortedTasks = this.state.tasks.sort(function(a, b) {
-                if (sortDirection === "ASC") {
+                if (sortOrder === "ASC" || sortOrder === "") {
                     return (a[sortField] > b[sortField]) ? 1 : ((a[sortField] < b[sortField]) ? -1 : 0);
                } else {
                    return (b[sortField] > a[sortField]) ? 1 : ((b[sortField] < a[sortField]) ? -1 : 0);

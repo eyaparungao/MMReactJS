@@ -18,7 +18,7 @@ var TaskListHeaders = React.createClass({
         };
     }, 
     handleHeaderClick: function(id, sortOrder) {
-        this.props.onSetActiveSortKey(id);
+        this.props.onSetActiveSortKey(id, sortOrder);
         this.setState({ activeSortKey: id });
     },
     renderSortIcon: function() {
