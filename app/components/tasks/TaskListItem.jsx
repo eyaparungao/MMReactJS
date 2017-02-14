@@ -1,100 +1,122 @@
-'use strict';
+import React, { Component } from 'react';
+import InputText from '../controls/InputText';
+import TextArea from '../controls/TextArea';
+import DropDownList from '../controls/DropDownList';
+import TaskApi from '../../api/taskApi';
+import priorityEnum from '../../enums/priorityEnum';
+import statusEnum from '../../enums/statusEnum';
 
-var React = require('react');
-var priorityEnum = require("../../enums/priorityEnum");
-var statusEnum = require("../../enums/statusEnum");
-var TaskApi = require("../../api/taskApi");
-
-var InputText = require("../controls/InputText");
-var TextArea = require("../controls/TextArea");
-var DropDownList = require("../controls/DropDownList");
-
-var TaskListItem = React.createClass({ 
-    getInitialState: function() {
-        return {
+export default class TaskListItem extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             isReadOnly: true,
-            task: this.props.task
+            task: props.task
         };
-    },
-    handleDeleteTask: function() {
+    }
+
+    handleCancelTask() {
+        this.setState({ isReadOnly: true });
+    }
+
+    handleDeleteTask() {
         this.props.onDeleteTask();
-    },
-    handleEditTask: function() {
+    }
+
+    handleEditTask() {
         this.setState({ isReadOnly: false });
-    },
-    handleSaveTask: function() {
+    }
+
+    handleSaveTask() {
         TaskApi.saveTask(this.state.task);
         this.setState({ isReadOnly: true });
-    },
-    handleCancelTask: function() {
-        this.setState({ isReadOnly: true });
-    },
-    renderPriorityColumn: function() {
+    }
+
+    renderPriorityColumn() {
         if (this.state.isReadOnly) {
             return (
-                <td className="task-priority">{priorityEnum.toString(this.state.task.priority)}</td>
+                <td className="task-priority">
+                    { priorityEnum.toString(this.state.task.priority) }
+                </td>
             );
         }
         else {
+            const priorityAttributes = {
+                name: 'priority',
+                defaultValue: this.state.task.priority,
+                items: priorityEnum.getAllPriorities(),
+                onChange: this.setTaskState
+            };
             return (
                 <td className="task-priority-edit">
-                    <DropDownList 
-                        name="priority"
-                        defaultValue={this.state.task.priority}
-                        items={priorityEnum.getAllPriorities()} 
-                        onChange={this.setTaskState}/>
+                    <DropDownList { ...priorityAttributes } />
                 </td>
             );
         }
-    },
-    renderStatusColumn: function() {
+    }
+
+    renderStatusColumn() {
         if (this.state.isReadOnly) {
             return (
-                <td className="task-status">{statusEnum.toString(this.state.task.status)}</td>
+                <td className="task-status">
+                    { statusEnum.toString(this.state.task.status) }
+                </td>
             );
         }
         else {
+            const statusAttributes = {
+                name: 'status',
+                defaultValue: this.state.task.status,
+                items: statusEnum.getAllStatuses(),
+                onChange: this.setTaskState
+            };
             return (
                 <td className="task-status-edit">
-                    <DropDownList 
-                        name="status"
-                        defaultValue={this.state.task.status}
-                        items={statusEnum.getAllStatuses()} 
-                        onChange={this.setTaskState}/>
+                    <DropDownList { ...statusAttributes } />
                 </td>
             );
         }
-    },
-    renderTaskDetailColumn: function() {
+    }
+
+    renderTaskDetailColumn() {
         if (this.state.isReadOnly) {
             return (
                 <td className="task-detail">
-                    <div className="task-name">{this.state.task.name}</div>
-                    <div className="task-description">&nbsp;&nbsp;&nbsp;{this.state.task.description}</div>
+                    <div className="task-name">
+                        {this.state.task.name}
+                    </div>
+                    <div className="task-description">
+                        &nbsp;&nbsp;&nbsp;{this.state.task.description}
+                    </div>
                 </td>
             );
         } else {
+            const taskNameAttributes = {
+                name: 'name',
+                className: 'task-name',
+                value: this.state.task.name,
+                onChange: this.setTaskState
+            };
+            const taskDescriptionAttributes = {
+                name: 'description',
+                className: 'task-description', 
+                value: this.state.task.description,
+                onChange: this.setTaskState
+            };
             return (
                 <td className="task-detail">
                     <div>
-                        <InputText 
-                            name="name"
-                            className="task-name"
-                            value={this.state.task.name}
-                            onChange={this.setTaskState}/>
+                        <InputText { ...taskNameAttributes } />
                     </div>
                     <div>
-                        <TextArea 
-                            name="description"
-                            className="task-description"
-                            value={this.state.task.description}
-                            onChange={this.setTaskState}/>
+                        <TextArea { ...taskDescriptionAttributes } />
                     </div>
                 </td>
             );
         }
-    },
-    renderButtonsColumn: function() {
+    }
+
+    renderButtonsColumn() { //TODO
         if (this.state.isReadOnly) {
             return (
                 <td>
@@ -116,36 +138,36 @@ var TaskListItem = React.createClass({
                 <td>
                     <button className="btn btn-sm btn-success"
                         title="Save Task"
-                        onClick={this.handleSaveTask}>
+                        onClick={ this.handleSaveTask }>
                         <i className="fa fa-save"></i>
                     </button>&nbsp;
                     <button className="btn btn-sm btn-danger"
                         title="Cancel"
-                        onClick={this.handleCancelTask}>
+                        onClick={ this.handleCancelTask }>
                         <i className="fa fa-remove"></i>
                     </button>
                 </td>
             );
         }
-    },
-    setTaskState: function(event) {
+    }
+
+    setTaskState(event) {
         if (event.target.nodeName === "SELECT") {
             this.state.task[event.target.name] = Number(event.target.value);
         } else {
             this.state.task[event.target.name] = event.target.value;
         }
         this.setState({ task: this.state.task })
-    },
-    render: function() {
+    }
+    
+    render() {
         return (
             <tr>
-                {this.renderTaskDetailColumn()}
-                {this.renderPriorityColumn()}
-                {this.renderStatusColumn()}
-                {this.renderButtonsColumn()}
+                { this.renderTaskDetailColumn() }
+                { this.renderPriorityColumn() }
+                { this.renderStatusColumn() }
+                { this.renderButtonsColumn() }
             </tr> 
         )
     }
-});
-
-module.exports = TaskListItem;
+}

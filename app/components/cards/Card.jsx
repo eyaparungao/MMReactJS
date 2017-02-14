@@ -1,13 +1,9 @@
-'use strict';
+import React, { Component } from 'react';
 
-var React = require('react');
-
-var Card = React.createClass({
-    render: function() {
+export default class Card extends Component {
+    render() {
         return (
             <div className='card'>Card</div>
         );
     }
-});
-
-module.exports = Card;
+}

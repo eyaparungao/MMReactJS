@@ -1,19 +1,17 @@
-'use strict';
+import React, { Component } from 'react';
 
-var React = require('react');
+export default class TextArea extends Component {
+    render() {
+        const textAreaAttributes = {
+            className: 'form-control',
+            name: this.props.name, 
+            placeholder: this.props.placeholder,
+            value: this.props.value,
+            onChange: this.props.onChange
+        };
 
-var TextArea = React.createClass({
-    render: function() {
         return (
-            <textarea 
-                className="form-control"
-                name={this.props.name}
-                placeholder={this.props.placeholder}
-                value={this.props.value}
-                onChange={this.props.onChange}>
-            </textarea>
+            <textarea { ...textAreaAttributes }></textarea>
         )
-    }
-});
-
-module.exports = TextArea;
+    } 
+}

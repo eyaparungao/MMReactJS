@@ -1,61 +1,70 @@
-'use strict';
+import React, { Component } from 'react';
+import TaskListHeaderItem from './TaskListHeaderItem';
 
-var React = require('react');
-var TaskListHeaderItem = require('./TaskListHeaderItem');
-
-var TaskListHeaders = React.createClass({
-    getInitialState: function() {
-        return {
+export default class TaskListHeaders extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             activeSortKey: this.props.activeSortKey,
             columns: this.props.columns
         };
-    },
-    getDefaultProps: function() {
-        return {
-            title: "",            
-            sortable: false,
-            sortOrder: "ASC"
-        };
-    }, 
-    handleHeaderClick: function(id, sortOrder) {
+    }
+
+    handleHeaderClick(id, sortOrder) {
         this.props.onSetActiveSortKey(id, sortOrder);
         this.setState({ activeSortKey: id });
-    },
-    renderSortIcon: function() {
+    }
+    
+    renderHeaderItems() {
+        //TODO
+        return this.state.columns.map(function(column) {      
+            const headerItemAttributes = {
+                className: column.className,
+                title: column.title,
+                key: column.id,
+                id: column.id,
+                sortable: column.sortable,
+                activeSortKey: column.id == this.state.activeSortKey,
+                onHeaderClick: this.handleHeaderClick
+            };   
+            return (
+                <TaskListHeaderItem { ...headerItemAttributes } />
+            );
+        }, this);        
+    }
+
+    renderSortIcon() {
         if (this.props.sortable && this.state.activeSortKey) {
             if (this.props.sortOrder == "ASC") {
                 return (
-                    <i className="fa fa-sort-asc" style={{verticalAlign: "middle"}}></i>
+                    <i 
+                        className="fa fa-sort-asc" 
+                        style={{verticalAlign: "middle"}}>
+                    </i>
                 );
             } else {
                 return (
-                    <i className="fa fa-sort-desc" style={{verticalAlign: "middle"}}></i>
+                    <i 
+                        className="fa fa-sort-desc" 
+                        style={{verticalAlign: "middle"}}>
+                    </i>
                 );
             }
         }        
         return;
-    }, 
-    renderHeaderItems: function() {
-        return this.state.columns.map(function(column) {            
-            return (
-                <TaskListHeaderItem 
-                    className={column.className}
-                    title={column.title} 
-                    key={column.id}
-                    id={column.id}
-                    sortable={column.sortable}
-                    activeSortKey={column.id == this.state.activeSortKey}
-                    onHeaderClick={this.handleHeaderClick}/>
-            );
-        }, this);        
-    },
-    render: function() {
+    }
+    
+    render() {
         return (    
             <tr>
-                {this.renderHeaderItems()}
+                { this.renderHeaderItems() }
             </tr>
         );
     }
-});
+}
 
-module.exports = TaskListHeaders;
+TaskListHeaders.defaultProps = {
+    title: "",            
+    sortable: false,
+    sortOrder: "ASC"
+};

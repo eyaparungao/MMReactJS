@@ -1,18 +1,14 @@
-'use strict';
+import React, { Component } from 'react';
+import Card from './Card';
 
-var React = require('react');
-var Card = require('./Card');
-
-var CardCollection = React.createClass({
-    render: function() {
+export default class CardCollection extends Component {
+    render() {
         return (
-            <div className='cardcollection'>
+            <div className='card-collection'>
                 <Card/>
                 <Card/>
                 <Card/>
             </div>
         );
     }
-});
-
-module.exports = CardCollection;
+}

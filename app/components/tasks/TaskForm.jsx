@@ -1,107 +1,145 @@
-'use strict';
+import React, { Component } from 'react';
+import Router, { Link } from 'react-router';
+import ReactBootstrap, { Panel } from '../../../node_modules/react-bootstrap/dist/react-bootstrap.js'
+import InputText from "../controls/InputText";
+import TextArea from "../controls/TextArea";
+import DropDownList from "../controls/DropDownList";
+import TaskApi from '../../api/taskApi';
+import priorityEnum from "../../enums/priorityEnum";
+import statusEnum from "../../enums/statusEnum";
 
-var React = require('react');
-var ReactBootstrap = require('../../../node_modules/react-bootstrap/dist/react-bootstrap.js');
-var Panel = ReactBootstrap.Panel;
-var Router = require('react-router');
-var Link = Router.Link;
-
-var priorityEnum = require("../../enums/priorityEnum");
-var statusEnum = require("../../enums/statusEnum");
-var TaskApi = require("../../api/taskApi");
-
-var InputText = require("../controls/InputText");
-var TextArea = require("../controls/TextArea");
-var DropDownList = require("../controls/DropDownList");
-
-var TaskForm = React.createClass({
-    getInitialState: function() {
-        return {
+export default class TaskForm extends Component {
+    constructor() {
+        super();
+        this.state = {
             task: {
                 taskId: 0,
-                name: "",
-                description: "",
+                name: '',
+                description: '',
                 priority: 1,
                 status: 1
             }
         };
-    },
-    handleSaveTask: function() {
+    }
+    
+    handleSaveTask() {
         TaskApi.saveTask(this.state.task);
         this.props.onCancelTask();
-    },
-    setTaskState: function(event) {
+    }
+
+    renderPriority() {
+        const priorityAttributes = {
+            name: 'priority',
+            defaultValue: this.state.task.priority,
+            items: priorityEnum.getAllPriorities(),
+            onChange: this.setTaskState
+        };
+        return (
+            <div 
+                className="form-group"
+                style={{textAlign: "left"}}>
+                <label htmlFor="priority">Priority: </label>&nbsp;
+                <DropDownList { ...priorityAttributes }/>
+            </div>
+        );
+    }
+
+    renderSaveCancelButtons() {
+        return (
+            <div className="btn-group">
+                <button 
+                    title="Save Task"
+                    onClick={this.handleSaveTask}>
+                    Save
+                </button>&nbsp;
+                <button 
+                    title="Cancel"
+                    onClick={this.props.onCancelTask}>
+                    Cancel
+                </button>
+            </div>
+        );
+    }
+
+    renderStatus() {        
+        const statusAttributes = {
+            name: 'status',
+            defaultValue: this.state.task.status,
+            items: statusEnum.getAllStatuses(),
+            onChange: this.setTaskState
+        };
+        return (
+            <div 
+                className="form-group"                        
+                style={{textAlign: "left"}}>
+                <label htmlFor="status">Status: </label>&nbsp;
+                <DropDownList { ...statusAttributes } />
+            </div>
+        );
+    }
+
+    renderTaskDescription() {
+        const taskDescriptionAttributes = {
+            name: 'description',
+            placeholder: 'Description',
+            className: 'task-description',
+            value: this.state.task.description,
+            onChange: this.setTaskState
+        };
+        return (
+            <div 
+                className="form-group"
+                style={{textAlign: "left"}}>
+                <label htmlFor="description">Description: </label>&nbsp;
+                <TextArea { ...taskDescriptionAttributes } />
+            </div>
+        );
+    }
+
+    renderTaskName() {
+        const taskNameAttributes = {
+            name: 'name',
+            placeholder: 'Task Name',
+            label: 'Task Name',
+            className: 'task-name',
+            value: this.state.task.name, 
+            onChange: this.setTaskState
+        };
+        return (
+            <div
+                className="form-group"
+                style={{textAlign: "left"}}>
+                <label htmlFor="name">Task Name: </label>&nbsp;
+                <InputText { ...taskNameAttributes } />
+            </div>
+        );
+    }
+
+    setTaskState(event) {
         if (event.target.nodeName === "SELECT") {
             this.state.task[event.target.name] = Number(event.target.value);
         } else {
             this.state.task[event.target.name] = event.target.value;
         }
         this.setState({ task: this.state.task })
-    },
-    render: function() {
+    }
+    
+    render() {
+        
+
         return (    
             <section className="task-form"> 
-                <Panel header="Add New Task" bsStyle="info">
-                    <div 
-                        className="form-group"
-                        style={{textAlign: "left"}}>
-                        <label htmlFor="name">Task Name: </label>&nbsp;
-                        <InputText 
-                            name="name"
-                            placeholder="Task Name"
-                            label="Task Name"
-                            className="task-name"
-                            value={this.state.task.name}
-                            onChange={this.setTaskState}/>
-                    </div>
-                    <div 
-                        className="form-group"
-                        style={{textAlign: "left"}}>
-                        <label htmlFor="description">Description: </label>&nbsp;
-                        <TextArea 
-                            name="description"
-                            placeholder="Description"
-                            className="task-description"
-                            value={this.state.task.description}
-                            onChange={this.setTaskState}/>
-                    </div>
-                    <div 
-                        className="form-group"                        
-                        style={{textAlign: "left"}}>
-                        <label htmlFor="status">Status: </label>&nbsp;
-                        <DropDownList 
-                            name="status"
-                            defaultValue={this.state.task.status}
-                            items={statusEnum.getAllStatuses()} 
-                            onChange={this.setTaskState}/>
-                    </div>
-                    <div 
-                        className="form-group"
-                        style={{textAlign: "left"}}>
-                        <label htmlFor="priority">Priority: </label>&nbsp;
-                        <DropDownList 
-                            name="priority"
-                            defaultValue={this.state.task.priority}
-                            items={priorityEnum.getAllPriorities()} 
-                            onChange={this.setTaskState}/>
-                    </div>
+                <Panel 
+                    header="Add New Task" 
+                    bsStyle="info">
+                    { this.renderTaskName() }
+                    { this.renderTaskDescription() }
+                    { this.renderStatus() }
+                    { this.renderPriority() }
                     <br/>
-                    <div className="btn-group">
-                        <button 
-                            title="Save Task"
-                            onClick={this.handleSaveTask}>
-                            Save
-                        </button>&nbsp;
-                        <button 
-                            title="Cancel"
-                            onClick={this.props.onCancelTask}>
-                            Cancel
-                        </button>
-                    </div>
+                    { this.renderSaveCancelButtons() }
                 </Panel>
             </section>
         );
     }
-});
-
-module.exports = TaskForm;
+}

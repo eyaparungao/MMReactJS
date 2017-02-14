@@ -1,10 +1,8 @@
-'use strict';
+import React, { Component } from 'react';
+import Header from './common/header';
+import Footer from './common/footer';
 
-var React = require('react');
-var Header = require('./common/Header');
-var Footer = require('./common/Footer');
-
-var Layout = function(props) {
+const Layout = function(props) {
     return (
         <div>
             <Header/>
@@ -16,4 +14,4 @@ var Layout = function(props) {
     )
 };
 
-module.exports = Layout;
+export default Layout;

@@ -1,11 +1,9 @@
-'use strict';
-
-var priorityEnum = {
+const priorityEnum = {
     low: 1,
     medium: 2,
     high: 3,
     toString: function(value) {
-        var result = "";
+        const result = "";
         switch(value) {
             case 1:
                 return "Low";
@@ -17,7 +15,7 @@ var priorityEnum = {
         return result;
     },
     getAllPriorities: function() {
-        var priorities = [];
+        const priorities = [];
         priorities.push({key: this.low, value: this.toString(this.low)});
         priorities.push({key: this.medium, value: this.toString(this.medium)});
         priorities.push({key: this.high, value: this.toString(this.high)});
@@ -25,4 +23,4 @@ var priorityEnum = {
     }
 }
 
-module.exports = priorityEnum;
+export default priorityEnum;

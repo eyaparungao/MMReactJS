@@ -1,19 +1,18 @@
-'use strict';
+import React, { Component } from 'react';
 
-var React = require('react');
+export default class InputText extends Component {
+    render() {
+        const inputTextAttributes = {
+            type: 'text',
+            className: 'form-control', 
+            name: this.props.name,
+            placeholder: this.props.placeholder,
+            value: this.props.value,
+            onChange: this.props.onChange
+        };
 
-var InputText = React.createClass({
-    render: function() {
         return (
-            <input 
-                type="text"
-                className="form-control"
-                name={this.props.name}
-                placeholder={this.props.placeholder}
-                value={this.props.value}
-                onChange={this.props.onChange}/>
+            <input { ...inputTextAttributes }/>
         )
     }
-});
-
-module.exports = InputText;
+}

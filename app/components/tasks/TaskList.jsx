@@ -1,57 +1,58 @@
-'use strict';
+import React, { Component } from 'react';
+import { Table, Panel, Modal } from '../../../node_modules/react-bootstrap/dist/react-bootstrap.js';
+import TaskForm from './TaskForm';
+import TaskListHeaders from './TaskListHeaders';
+import TaskListItem from './TaskListItem';
+import TaskApi from '../../api/taskApi';
 
-var React = require('react');
-var ReactBootstrap = require('../../../node_modules/react-bootstrap/dist/react-bootstrap.js');
-var Table = ReactBootstrap.Table;
-var Panel = ReactBootstrap.Panel;
-var Modal = ReactBootstrap.Modal;
-var TaskApi = require("../../api/taskApi");
-var TaskForm = require('./TaskForm');
-var TaskListItem = require('./TaskListItem');
-var TaskListHeaders = require('./TaskListHeaders');
-var TaskListHeaderItem = require('./TaskListHeaderItem');
-
-var TaskList = React.createClass({    
-    getInitialState: function() {
-        return {
-            tasks: this.props.data,
+export default class TaskList extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            tasks: props.data,
             showModal: false,
             sortKey: "name",
             sortDirection: "ASC",
             columns: this.props.columns,
             activeSortKey: 1
         }
-    },
-    handleDeleteTask: function(taskId) {
+    }
+
+    handleDeleteTask(taskId) {
         if (taskId) {
             TaskApi.deleteTask(taskId);
             this.handleUpdateAllTasks();
         }
-    },
-    handleUpdateAllTasks: function() {
+    }
+
+    handleUpdateAllTasks() {
         this.setState({ tasks: TaskApi.getAllTasks() });
-    },
-    handleOpenModal: function() {
+    }
+
+    handleOpenModal() {
         this.setState({ showModal: true });
-    },
-    handleCloseModal: function() {
+    }
+
+    handleCloseModal() {
         this.setState({ showModal: false });
         this.handleUpdateAllTasks();
-    },
-    setActiveSortKey: function(id, sortOrder) {
+    }
+
+    setActiveSortKey(id, sortOrder) {
         this.setState({ activeSortKey: id });
         this.sortTasks(id, sortOrder);
-    },
-    sortTasks: function(id, sortOrder) {
-        var sortField = "";
-        for (var i = 0; i < this.state.columns.length; i++) {
+    }
+
+    sortTasks(id, sortOrder) {
+        let sortField = "";
+        for (let i = 0; i < this.state.columns.length; i++) {
             if (this.state.columns[i].id == id && this.state.columns[i].sortable) {
                 sortField = this.state.columns[i].sortField;
                 break;
             }
         }
         if (sortField != "") {
-            var sortedTasks = this.state.tasks.sort(function(a, b) {
+            let sortedTasks = this.state.tasks.sort(function(a, b) {
                 if (sortOrder === "ASC" || sortOrder === "") {
                     return (a[sortField] > b[sortField]) ? 1 : ((a[sortField] < b[sortField]) ? -1 : 0);
                } else {
@@ -60,8 +61,10 @@ var TaskList = React.createClass({
             });
             this.setState({ tasks: sortedTasks });
         }
-    },
-    renderTasks: function() {
+    }
+
+    renderTasks() {
+        //TODO
         return this.state.tasks.map(function(task) {
             return (
                 <TaskListItem
@@ -70,8 +73,9 @@ var TaskList = React.createClass({
                     onDeleteTask={this.handleDeleteTask.bind(this, task.taskId)}  />
             );
         }, this);
-    },
-    render: function() {
+    }
+
+    render() {
         return (    
             <section> 
                 <Panel header="Task Master List" bsStyle="primary">
@@ -88,13 +92,10 @@ var TaskList = React.createClass({
                         <button onClick={this.handleOpenModal}>Add New Task</button>
                     </div>
                     <Modal show={this.state.showModal} >
-                        <TaskForm
-                            onCancelTask={this.handleCloseModal}/>
+                        <TaskForm onCancelTask={this.handleCloseModal}/>
                     </Modal>
                 </Panel>
             </section>
         );
     }
-});
-
-module.exports = TaskList;
+}

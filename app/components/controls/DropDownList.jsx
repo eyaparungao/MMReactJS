@@ -1,30 +1,31 @@
-'use strict';
+import React, { Component } from 'react';
 
-var React = require('react');
-
-var DropDownList = React.createClass({
-    renderItems: function() {
-        return this.props.items.map(function(item) {
+export default class DropDownList extends Component {
+    renderItems() {
+        //TODO
+        return this.props.items.map((item) => {
             return(
                 <option
-                    key={item.key}
-                    value={item.key}>
-                    {item.value}
+                    key = { item.key }
+                    value = { item.key }>
+                    { item.value }
                 </option>
             );
         }, this);
-    },
-    render: function() {
+    }
+
+    render() {
+        const dropdownListAttributes = {
+            className: 'form-control',
+            name: this.props.name,
+            defaultValue: this.props.defaultValue,
+            onChange: this.props.onChange
+        };
+
         return (
-            <select
-                className="form-control"
-                name={this.props.name}
-                defaultValue={this.props.defaultValue}
-                onChange={this.props.onChange}>
-                {this.renderItems()}
+            <select { ...dropdownListAttributes }>
+                { this.renderItems() }
             </select>
         )
     }
-});
-
-module.exports = DropDownList;
+}

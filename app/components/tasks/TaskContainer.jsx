@@ -1,13 +1,9 @@
-'use strict';
+import React, { Component } from 'react';
+import { Table, Panel } from '../../../node_modules/react-bootstrap/dist/react-bootstrap.js'
+import TaskList from './TaskList';
+import TaskApi from '../../api/taskApi';
 
-var React = require('react');
-var ReactBootstrap = require('../../../node_modules/react-bootstrap/dist/react-bootstrap.js');
-var Table = ReactBootstrap.Table;
-var Panel = ReactBootstrap.Panel;
-var TaskApi = require("../../api/taskApi");
-var TaskList = require('./TaskList');
-
-var columns = [{
+const columns = [{
         id: 1,
         title: "Task Details",
         sortField: "name",
@@ -33,19 +29,22 @@ var columns = [{
     }
 ];
 
-
-var TaskContainer = React.createClass({
-    render: function() {
+export default class TaskContainer extends Component {
+    render() {
+        const panelAttributes = {
+            header: this.props.title,
+            bsStyle: 'primary'
+        };
+        const taskListAttributes = {
+            data: TaskApi.getAllTasks(),
+            columns: columns
+        };
         return (    
             <section> 
-                <Panel header={this.props.title} bsStyle="primary">
-                    <TaskList 
-                        data={TaskApi.getAllTasks()}
-                        columns={columns}/>
+                <Panel { ...panelAttributes }>
+                    <TaskList { ... taskListAttributes } />
                 </Panel>
             </section>
         );
     }
-});
-
-module.exports = TaskContainer;
+}

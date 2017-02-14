@@ -1,9 +1,9 @@
+import _ from 'lodash';
 
-var taskLocalStorageKey = "TaskList";
-var tasks = JSON.parse(localStorage.getItem(taskLocalStorageKey)) || [];
-var _ = require('lodash');
+const taskLocalStorageKey = "TaskList";
+const tasks = JSON.parse(localStorage.getItem(taskLocalStorageKey)) || [];
 
-var initialTaskData = [{
+const initialTaskData = [{
   taskId: 1,
   name: "TaskName1",
   description: "This is Task # 1",
@@ -23,7 +23,7 @@ var initialTaskData = [{
   status: 3
 }];
 
-var getNewId = function () {
+const getNewId = function () {
     if (tasks && tasks.length >= 1) {
         var max = _.maxBy(tasks, function (task) { return task.taskId; });
         return max.taskId + 1;
@@ -31,7 +31,7 @@ var getNewId = function () {
     return 1;
 };
 
-var TaskApi = {
+const TaskApi = {
     initializeTasks: function() {        
         localStorage.setItem(taskLocalStorageKey, JSON.stringify(initialTaskData));
     },
@@ -40,7 +40,7 @@ var TaskApi = {
     },
     saveTask: function(task) {
         if (task.taskId != 0) {
-            var existingTask = _.indexOf(tasks, _.find(tasks, { taskId: task.taskId }));
+            const existingTask = _.indexOf(tasks, _.find(tasks, { taskId: task.taskId }));
             tasks.splice(existingTask, 1, task);
         } else {
             task.taskId = getNewId();
@@ -55,5 +55,5 @@ var TaskApi = {
     }
 };
 
-module.exports = TaskApi;
+export default TaskApi;
 

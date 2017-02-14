@@ -1,9 +1,7 @@
-
-import React from 'react';
-import ReactBootstrap from 'react-bootstrap';
+import React, { Component } from 'react';
 import { Panel } from 'react-bootstrap';
 
-class PageNotFound extends React.Component {
+export default class PageNotFound extends Component {
     render() {
         return (
             <section> 
@@ -14,5 +12,3 @@ class PageNotFound extends React.Component {
         );
     }
 };
-
-module.exports = PageNotFound;
